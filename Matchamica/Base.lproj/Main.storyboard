@@ -20,7 +20,7 @@
                                 <rect key="frame" x="110" y="184" width="100" height="200"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                                <state key="normal" title="A♣︎" backgroundImage="frontBg">
+                                <state key="normal" backgroundImage="backBg">
                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -47,7 +47,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="frontBg" width="64" height="96"/>
+        <image name="backBg" width="64" height="96"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

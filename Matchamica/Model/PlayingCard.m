@@ -33,7 +33,7 @@
 
 + (NSArray *)validSuit
 {
-    return @[@"?", @"♣︎", @"♥︎", @"♠︎", @""];
+    return @[@"♠︎", @"♣︎", @"♥︎", @"♦︎"];
 }
 
 + (NSArray *)rankStrings
@@ -50,7 +50,7 @@
 - (void)setRank:(NSUInteger)rank
 {
     if (rank <= [PlayingCard maxRank]) {
-        rank = _rank;
+        _rank = rank;
     }
 }
 
