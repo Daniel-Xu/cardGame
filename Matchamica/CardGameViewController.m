@@ -8,49 +8,68 @@
 
 #import "CardGameViewController.h"
 #import "PlayingCardDeck.h"
-
+#import "CardMatchingGame.h"
 
 @interface CardGameViewController ()
-@property (weak, nonatomic) IBOutlet UILabel *flipLabel;
-@property (nonatomic) int flipCount;
-@property (strong, nonatomic) Deck *deck;
+@property (strong, nonatomic) CardMatchingGame *game;
+@property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *cardButtons;
+@property (weak, nonatomic) IBOutlet UILabel *scoreLabel;
+
+
+
 @end
 
 @implementation CardGameViewController
 
-- (void)setFlipCount:(int)flipCount
+- (CardMatchingGame *)game
 {
-    _flipCount = flipCount;
-    self.flipLabel.text = [NSString stringWithFormat:@"Flips: %d", self.flipCount];
-}
-
-- (IBAction)touchCardButton:(UIButton *)sender {    
-
-    if ([sender.currentTitle length]) {
-        [sender setBackgroundImage:[UIImage imageNamed:@"backBg"]
-                          forState:UIControlStateNormal];
-        [sender setTitle:@"" forState:UIControlStateNormal];
-        self.flipCount++;
-    } else {
-        Card *randomCard = [self.deck drawRandomCard];
-        if(randomCard) {
-            [sender setBackgroundImage:[UIImage imageNamed:@"frontBg"]
-                              forState:UIControlStateNormal];
-            [sender setTitle: randomCard.contents forState:UIControlStateNormal];
-            self.flipCount++;
-        }
-
+    if (!_game) {
+        _game = [[CardMatchingGame alloc] initWithCardCount:[self.cardButtons count]
+                                                  usingDeck:[self createDeck]];
     }
-
+    return _game;
 }
 
-- (Deck *)deck
+
+- (IBAction)touchCardButton:(UIButton *)sender {
+
+    NSUInteger chosenButtonIndex = [self.cardButtons indexOfObject:sender];
+   
+    [self.game chooseCardAtIndex:chosenButtonIndex];
+
+    [self updateUI];
+    
+}
+
+- (Deck *)createDeck
 {
-    if (!_deck) {
-        _deck = [[PlayingCardDeck alloc] init];
+    return [[PlayingCardDeck alloc] init];
+}
+
+
+- (void)updateUI
+{
+    for (UIButton *cardButton in self.cardButtons) {
+        NSUInteger cardButtonIndex = [self.cardButtons indexOfObject:cardButton];
+        Card *card = [self.game cardAtIndex:cardButtonIndex];
+        [cardButton setTitle:[self titleForCard:card] forState:UIControlStateNormal];
+        [cardButton setBackgroundImage:[self imageForCard:card] forState:UIControlStateNormal];
+        cardButton.enabled = !card.isMatched;
+
     }
     
-    return _deck;
+    self.scoreLabel.text = [NSString stringWithFormat:@"Your score is: %ld", self.game.score];
+}
+
+- (NSString *)titleForCard:(Card *)card
+{
+    return card.isChosen? card.contents : @"";
+
+}
+
+- (UIImage *)imageForCard:(Card *)card
+{
+    return [UIImage imageNamed: card.isChosen? @"frontBg":@"backBg"];
 }
 
 @end
