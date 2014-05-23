@@ -24,12 +24,16 @@
     int score = 0;
     
     if([otherCards count] == 1){
-        PlayingCard *otherCard = [otherCards firstObject];
-        if (self.rank == otherCard.rank) {
-            score = 4;
-        } else if ([self.suit isEqualToString:otherCard.suit]) {
-            score = 1;
+        id card = [otherCards firstObject];
+        if ([card isKindOfClass:[PlayingCard class]]) {
+            PlayingCard *otherCard = (PlayingCard *)card;
+            if (self.rank == otherCard.rank) {
+                score = 4;
+            } else if ([self.suit isEqualToString:otherCard.suit]) {
+                score = 1;
+            }
         }
+
     }
     return score;
     
